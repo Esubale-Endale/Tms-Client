@@ -1,0 +1,12 @@
+$primary: #007bff;
+
+@mixin center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body{
+    @include center();
+    background-color: $primary;
+}
