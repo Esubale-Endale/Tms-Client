@@ -6,7 +6,7 @@ $primary: #007bff;
   align-items: center;
 }
 
-body{
-    @include center();
-    background-color: $primary;
+body {
+  @include center();
+  background-color: $primary;
 }
