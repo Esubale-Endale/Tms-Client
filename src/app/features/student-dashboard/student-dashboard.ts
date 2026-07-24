@@ -1,25 +1,37 @@
-// These are the Angular functions we need. signal() and computed() come from Angular's core.
 import { Component, signal, computed } from '@angular/core';
-// The @Component decorator tells Angular: "This class is a visual component."
-// It is metadata it describes how this class connects to the HTML template.
+import { CourseCardComponent } from '../../ui/course-card/course-card';
+import { Course } from '../../models/course.model';
+
 @Component({
-  selector: 'app-student-dashboard', // The HTML tag name: <app-student-dashboard />
-  standalone: true, // This component manages its own imports (no NgModule)
-  templateUrl: './student-dashboard.html', // Points to the HTML file
-  styleUrl: './student-dashboard.scss', // Points to the styles file
+  selector: 'app-student-dashboard',
+  standalone: true,
+  imports: [CourseCardComponent],
+  templateUrl: './student-dashboard.html',
+  styleUrl: './student-dashboard.scss',
 })
 export class StudentDashboardComponent {
-  // signal('Liya Kebede') creates a reactive variable. Angular watchesit.
-  // When its value changes, Angular automatically updates the part ofthe screen that displays it.
   studentName = signal('Liya Kebede');
   earnedCredits = signal(45);
-  // computed() creates a read-only signal that derives its value fromother signals.
-  // It recalculates automatically whenever earnedCredits() changes nomanual refresh.
+  selectedCourse = signal<Course | null>(null);
+
+
+  sampleCourse: Course = {
+    id: 1,
+    title: 'Advanced Java Services',
+    code: 'CSE-101',
+    maxCapacity: 30,
+    enrollmentCount: 12,
+  };
+
+  handleEnroll(course: Course) {
+    this.selectedCourse.set(course);
+    console.log('Enrollment requested for:', course.title);
+  }
+
   graduationStatus = computed(() =>
     this.earnedCredits() >= 120 ? 'Eligible for Graduation' : 'In Progress',
   );
-  // A regular method. When called, it updates the earnedCredits signal.
-  // The .update() method receives the current value (c) and returns the new value (c + 3).
+
   registerForClass() {
     this.earnedCredits.update((c) => c + 3);
   }
