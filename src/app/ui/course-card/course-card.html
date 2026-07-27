@@ -1,12 +1,13 @@
-<div class="card">
+<div class="card m-3 px-9 py-4 bg-gray-200 max-w-90">
   <h3>
-    <a [routerLink]="['/courses', course().id]"> {{ course().title }} ({{ course().code }}) </a>
+    <a class="cursor-pointer text-blue-500" [routerLink]="['/courses', course().id]"> {{ course().title }} ({{ course().code }}) </a>
   </h3>
   <p>Enrolled {{ course().enrollmentCount }} of {{ course().maxCapacity }} seats</p>
   <span class="badge" [class.closed]="course().enrollmentCount >= course().maxCapacity">
     {{ course().enrollmentCount >= course().maxCapacity ? 'Full' : 'Accepting enrollments' }}
   </span>
   <button
+    class="bg-blue-100 hover:bg-blue-200 px-2 py-1 border-sm text-xl cursor-pointer"
     (click)="enrollClicked.emit(course())"
     [disabled]="course().enrollmentCount >= course().maxCapacity"
   >

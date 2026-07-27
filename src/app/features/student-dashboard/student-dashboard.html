@@ -1,17 +1,21 @@
-<div class="dashboard">
-  <h1>Welcome, {{ studentName() }}</h1>
-  <p>Credits Earned: {{ earnedCredits() }}</p>
-  <p>Graduation Status: {{ graduationStatus() }}</p>
-  <button (click)="registerForClass()">Register for a Class (+3 credits)</button>
+<div class="dashboard h-screen px-5 py-5 bg-gray-300">
+  <h1 class="font-bold ms-12 py-3 text-yellow-00 text-2xl">Welcome, {{ studentName() }}</h1>
+  <p>
+    Credits Earned: <span class="text-blue-500">{{ earnedCredits() }}</span>
+  </p>
+  <p>
+    Graduation Status: <span class="text-blue-500"> {{ graduationStatus() }}</span>
+  </p>
+  <button class="bg-blue-200 hover:bg-blue-300 px-3 py-1 border-xl" (click)="registerForClass()">Register for a Class (+3 credits)</button>
 
-  <h2>Course Catalog</h2>
+  <h2 class="mt-5 font-bold text-xl ">Course Catalog</h2>
 
   @if (availableCourses().length == 0) {
     <div class="empty-state">
       <p>No courses are available this term. Check back during registration.</p>
     </div>
   } @else {
-    <div class="grid">
+    <div class="grid grid-cols-2 gap-2">
       @for (course of availableCourses(); track course.id) {
         <tms-course-card [course]="course" (enrollClicked)="handleEnroll($event)" />
       } @empty {
@@ -20,7 +24,7 @@
     </div>
   }
   @if (selectedCourse(); as picked) {
-    <p class="selection-hint">
+    <p class="selection-hint mt-12">
       Last enrollment request: <strong>{{ picked.title }}</strong
       >({{ picked.code }})
     </p>

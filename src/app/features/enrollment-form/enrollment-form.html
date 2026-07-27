@@ -1,0 +1,65 @@
+<h2 class="text-2xl font-bold my-6 mx-4">Course Enrollment</h2>
+@if (submitted()) {
+  <div class="success">Enrollment submitted. Check the console for the payload.</div>
+} @else {
+  <form class="flex flex-col gap-3" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="flex gap-3">
+      <label for="studentId">Student ID</label>
+      <input
+        class="border-1 px-3 py-1"
+        id="studentId"
+        formControlName="studentId"
+        placeholder="e.g. STU-1234"
+      />
+      @if (form.controls.studentId.touched && form.controls.studentId.invalid) {
+        <span class="error text-sm text-red-400 ms-4"
+          >Enter a valid Student ID (format: STU-0000)</span
+        >
+      }
+    </div>
+
+    <div class="flex gap-3">
+      <label for="courseId">Course ID</label>
+      <input
+        class="border-1 px-3 py-1"
+        id="courseId"
+        formControlName="courseId"
+        placeholder="e.g. 1 (TMS course primary key)"
+      />
+      @if (form.controls.courseId.touched && form.controls.courseId.invalid) {
+        <span class="error text-sm text-red-400 ms-4">Course ID is required</span>
+      }
+    </div>
+    <div class="flex gap-3">
+      <label for="term">Term</label>
+      <input class="border-1 px-3 py-1" id="term" formControlName="term" />
+    </div>
+    <div class="flex gap-3">
+      <label for="notes">Notes (optional)</label>
+      <textarea id="notes" formControlName="notes"></textarea>
+    </div>
+    <h3>Backup Courses</h3>
+
+    @for (backup of backups.controls; track $index) {
+      <div class="backup-row">
+        <input
+          class="border-1 px-3 py-1"
+          [formControl]="backup"
+          [placeholder]="'Backup course ' + ($index + 1)"
+        />
+
+        <button class="bg-blue-200 hover:bg-blue-300" type="button" (click)="removeBackup($index)">
+          Remove
+        </button>
+      </div>
+    }
+    <button class="bg-blue-200 hover:bg-blue-300" type="button" (click)="addBackup()">
+      Add Backup Course
+    </button>
+    <hr />
+
+    <button class="bg-blue-200 hover:bg-blue-300" type="submit" [disabled]="form.invalid">
+      Confirm Enrollment
+    </button>
+  </form>
+}
