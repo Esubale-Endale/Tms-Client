@@ -1,13 +1,21 @@
-<div class="card m-3 px-9 py-4 bg-gray-200 max-w-90">
-  <h3>
-    <a class="cursor-pointer text-blue-500" [routerLink]="['/courses', course().id]"> {{ course().title }} ({{ course().code }}) </a>
-  </h3>
-  <p>Enrolled {{ course().enrollmentCount }} of {{ course().maxCapacity }} seats</p>
+<div class="card flex flex-col gap-2 m-3 px-6 py-3 bg-gray-200 w-full h-full">
+  <div class="flex mb-6 ">
+    <h3>
+      <a
+        class="cursor-pointer text-xl font-bold text-blue-500"
+        [routerLink]="['/courses', course().id]"
+      >
+        <span class="block"> {{ course().title }} </span>
+        <span class="block"> ({{ course().code }}) </span>
+      </a>
+    </h3>
+  </div>
+  <p>Enrolled {{ course().enrollmentCount }}/{{ course().maxCapacity }} seats</p>
   <span class="badge" [class.closed]="course().enrollmentCount >= course().maxCapacity">
     {{ course().enrollmentCount >= course().maxCapacity ? 'Full' : 'Accepting enrollments' }}
   </span>
   <button
-    class="bg-blue-100 hover:bg-blue-200 px-2 py-1 border-sm text-xl cursor-pointer"
+    class="text-white mt-3 bg-blue-500 box-border border border-transparent hover:bg-blue-600 focus:ring-4 focus:ring-blue-400 shadow-xs font-medium leading-5 rounded-xl text-sm px-4 py-2.5 focus:outline-none"
     (click)="enrollClicked.emit(course())"
     [disabled]="course().enrollmentCount >= course().maxCapacity"
   >

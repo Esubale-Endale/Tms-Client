@@ -54,15 +54,10 @@ export class EnrollmentFormComponent {
   }
   submit() {
     if (this.form.valid) {
-      // getRawValue() extracts the full form data as a JSON object.
-      // IMPORTANT: Do NOT use .value here. If any field is disabled, .value silently
-      // drops that field from the object. getRawValue() always includes everything.
       const payload = this.form.getRawValue();
       console.log('Enrollment payload:', payload);
       this.submitted.set(true);
     } else {
-      // markAllAsTouched() forces Angular to show validation errors on every field.
-      // Without this call, Angular only shows errors on fields the user has clicked on.
       this.form.markAllAsTouched();
     }
   }

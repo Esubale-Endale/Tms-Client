@@ -13,6 +13,7 @@ export class CourseDetail {
   constructor() {
     effect(() => {
       console.log(`Loading course detail for ID: ${this.id()}`);
+      console.log(this)
     });
   }
 }
