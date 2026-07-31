@@ -1,5 +1,5 @@
 import { rxResource } from '@angular/core/rxjs-interop';
-import { CourseService } from '../../services/course.service';
+import { CourseService } from '../../services/course';
 import { Component, signal, computed, inject } from '@angular/core';
 import { CourseCardComponent } from '../../ui/course-card/course-card';
 import { Course } from '../../models/course.model';

@@ -4,42 +4,59 @@
     @if (submitted()) {
       <div class="success">Enrollment submitted. Check the console for the payload.</div>
     } @else {
-      <form class="flex flex-col gap-3 " [formGroup]="form" (ngSubmit)="submit()">
-        <div class="flex gap-3">
-          <label for="studentId">Student ID</label>
+      <form class="min-w-md flex flex-col gap-3" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="mb-5">
+          <label class="block mb-2.5 text-sm font-medium text-heading" for="studentId"
+            >Student ID</label
+          >
           <input
-            class="border-1 px-3 py-1"
+            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
             id="studentId"
             formControlName="studentId"
             placeholder="e.g. STU-1234"
           />
           @if (form.controls.studentId.touched && form.controls.studentId.invalid) {
-            <span class="error text-sm text-red-400 ms-4"
+            <span class="block error text-sm text-red-400 ms-4"
               >Enter a valid Student ID (format: STU-0000)</span
             >
           }
         </div>
 
-        <div class="flex gap-3">
-          <label for="courseId">Course ID</label>
+        <div class="mb-5">
+          <label class="block mb-2.5 text-sm font-medium text-heading" for="courseId"
+            >Course ID</label
+          >
           <input
-            class="border-1 px-3 py-1"
+            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
             id="courseId"
             formControlName="courseId"
             placeholder="e.g. 1 (TMS course primary key)"
           />
           @if (form.controls.courseId.touched && form.controls.courseId.invalid) {
-            <span class="error text-sm text-red-400 ms-4">Course ID is required</span>
+            <span class="block error text-sm text-red-400 ms-4">Course ID is required</span>
           }
         </div>
-        <div class="flex gap-3">
-          <label for="term">Term</label>
-          <input class="border-1 px-3 py-1" id="term" formControlName="term" />
+
+        <div class="mb-5">
+          <label class="block mb-2.5 text-sm font-medium text-heading" for="term">Term</label>
+          <input
+            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+            id="term"
+            formControlName="term"
+          />
         </div>
-        <div class="flex gap-3">
-          <label for="notes">Notes (optional)</label>
-          <textarea id="notes" formControlName="notes"></textarea>
+
+        <div class="mb-5">
+          <label class="block mb-2.5 text-sm font-medium text-heading" for="notes"
+            >Notes (optional)</label
+          >
+          <textarea
+            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+            id="notes"
+            formControlName="notes"
+          ></textarea>
         </div>
+
         <h3>Backup Courses</h3>
 
         @for (backup of backups.controls; track $index) {
@@ -64,7 +81,12 @@
         </button>
         <hr />
 
-        <button class="bg-blue-200 hover:bg-blue-300" type="submit" [disabled]="form.invalid">
+        <button
+          class="text-white bg-blue box-border border border-transparent hover:bg-blue-500 focus:ring-4 focus:ring-blue-400 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+          class="bg-blue-200 hover:bg-blue-300"
+          type="submit"
+          [disabled]="form.invalid"
+        >
           Confirm Enrollment
         </button>
       </form>
