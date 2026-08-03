@@ -9,7 +9,7 @@ import { Course } from '../../models/course.model';
   standalone: true,
   imports: [CourseCardComponent],
   templateUrl: './student-dashboard.html',
-  styleUrl: './student-dashboard.scss',
+  styleUrls: ['./student-dashboard.scss'],
 })
 export class StudentDashboardComponent {
   private api = inject(CourseService);
@@ -21,7 +21,7 @@ export class StudentDashboardComponent {
   handleEnroll(course: Course) {
     this.selectedCourse.set(course);
     console.log('Enrollment requested for:', course.title);
-    console.log(course)
+    console.log(course);
   }
 
   graduationStatus = computed(() =>

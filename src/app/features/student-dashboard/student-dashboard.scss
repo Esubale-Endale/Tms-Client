@@ -1,3 +1,55 @@
 :host {
   display: block;
+  min-height: 100vh;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, var(--app-surface-variant) 0%, var(--app-surface) 100%);
+  color: var(--app-on-surface);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+:host section {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+:host .course-catalog-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+:host h1 {
+  margin: 0;
+  font-size: clamp(2rem, 2.3vw, 2.7rem);
+  line-height: 1.05;
+}
+
+:host p {
+  color: var(--mat-sys-on-surface-variant, #475569);
+}
+
+:host .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  background: var(--app-surface-variant);
+  color: var(--mat-sys-on-surface-variant, #0c4a6e);
+}
+
+:host .badge.closed {
+  background: var(--app-error);
+  color: var(--app-on-error);
+}
+
+:host .spinner,
+:host .skeleton-chart {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: var(--app-surface-variant);
+  color: var(--mat-sys-on-surface-variant, #475569);
+  border: 1px solid var(--app-outline);
 }

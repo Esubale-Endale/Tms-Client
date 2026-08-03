@@ -4,7 +4,7 @@ import { Component, input } from '@angular/core';
   selector: 'tms-analytics-chart',
   imports: [],
   templateUrl: './analytics-chart.html',
-  styleUrl: './analytics-chart.scss',
+  styleUrls: ['./analytics-chart.scss'],
 })
 export class AnalyticsChart {
   data = input.required();

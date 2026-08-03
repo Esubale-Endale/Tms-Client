@@ -1,5 +1,9 @@
-<div class="min-h-screen bg-gradient-to-b from-indigo-50 via-slate-50 to-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8">
-  <section class="rounded-3xl border border-indigo-100 bg-white/80 backdrop-blur-sm p-5 shadow-lg shadow-indigo-100/50 sm:p-6">
+<div
+  class="min-h-screen bg-gradient-to-b from-indigo-50 via-slate-50 to-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8"
+>
+  <section
+    class="rounded-3xl border border-indigo-100 bg-white/80 backdrop-blur-sm p-5 shadow-lg shadow-indigo-100/50 sm:p-6"
+  >
     <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
       <div>
         <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-500">
@@ -22,11 +26,15 @@
     </div>
 
     <div class="grid gap-3 md:grid-cols-2">
-      <article class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4">
+      <article
+        class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4"
+      >
         <span class="mb-1 block text-sm text-slate-500">Credits earned</span>
         <strong class="text-xl font-bold text-slate-900">{{ earnedCredits() }}</strong>
       </article>
-      <article class="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-violet-50 p-4">
+      <article
+        class="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-violet-50 p-4"
+      >
         <span class="mb-1 block text-sm text-slate-500">Graduation status</span>
         <strong class="text-xl font-bold text-slate-900">{{ graduationStatus() }}</strong>
       </article>
@@ -41,7 +49,9 @@
           Browse available offerings and enroll in the classes you want.
         </p>
       </div>
-      <span class="rounded-full bg-gradient-to-r from-indigo-100 to-violet-100 px-3 py-1 text-sm font-semibold text-indigo-700">
+      <span
+        class="rounded-full bg-gradient-to-r from-indigo-100 to-violet-100 px-3 py-1 text-sm font-semibold text-indigo-700"
+      >
         +3 credits per registration
       </span>
     </div>
@@ -57,7 +67,7 @@
         Could not load courses. Make sure your .NET API is running.
       </div>
     } @else {
-      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div class="course-catalog-grid">
         @for (course of coursesResource.value()!; track course.id) {
           <tms-course-card [course]="course" (enrollClicked)="handleEnroll($event)" />
         } @empty {

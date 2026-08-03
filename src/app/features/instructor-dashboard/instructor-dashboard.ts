@@ -6,7 +6,7 @@ import { EnrollmentStore } from '../../store/enrollment.store';
   selector: 'app-instructor-dashboard',
   imports: [AnalyticsChart],
   templateUrl: './instructor-dashboard.html',
-  styleUrl: './instructor-dashboard.scss',
+  styleUrls: ['./instructor-dashboard.scss'],
 })
 export class InstructorDashboard {
   store = inject(EnrollmentStore);

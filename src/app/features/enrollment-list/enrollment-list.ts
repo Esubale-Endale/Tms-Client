@@ -9,6 +9,7 @@ import { Enrollment } from '../../models/enrollment.model';
   standalone: true,
   imports: [MatTableModule, MatPaginatorModule, MatSortModule],
   templateUrl: './enrollment-list.html',
+  styleUrls: ['./enrollment-list.scss'],
 })
 export class EnrollmentListComponent {
   store = inject(EnrollmentStore);
