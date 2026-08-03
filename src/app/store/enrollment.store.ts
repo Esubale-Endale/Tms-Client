@@ -4,7 +4,7 @@ import { withEntities, setAllEntities, updateEntity } from '@ngrx/signals/entiti
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, concatMap, tap, catchError, EMPTY } from 'rxjs';
 import { EnrollmentService } from '../services/enrollment';
-import { Enrollment } from '../models/enrollment.model';
+import { Enrollment, EnrollmentStatus } from '../models/enrollment.model';
 
 export const EnrollmentStore = signalStore(
   { providedIn: 'root' },
@@ -14,8 +14,9 @@ export const EnrollmentStore = signalStore(
   withEntities<Enrollment>(),
 
   withComputed((store) => ({
-    pendingCount: computed(() => store.entities().filter((e) => e.status === 'Pending').length),
+    pendingCount: computed(() => store.entities().filter((e) => e.status === EnrollmentStatus.Pending).length),
   })),
+
   withMethods((store, api = inject(EnrollmentService)) => ({
     loadEnrollments: rxMethod<void>(
       pipe(
@@ -35,12 +36,12 @@ export const EnrollmentStore = signalStore(
     approveEnrollment: rxMethod<string>(
       pipe(
         tap((id) => {
-          patchState(store, updateEntity({ id, changes: { status: 'Approved' } }));
+          patchState(store, updateEntity({ id, changes: { status: EnrollmentStatus.Approved } }));
         }),
         concatMap((id) =>
           api.approve(id).pipe(
             catchError((err) => {
-              patchState(store, updateEntity({ id, changes: { status: 'Pending' } }));
+              patchState(store, updateEntity({ id, changes: { status: EnrollmentStatus.Pending } }));
               patchState(store, {
                 error: 'Server rejected the approval.Check enrollment constraints.',
               });

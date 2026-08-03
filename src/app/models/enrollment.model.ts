@@ -4,6 +4,13 @@ export interface Enrollment {
   studentName: string;
   courseId: number;
   courseName: string;
-  status: 'Pending' | 'Approved' | 'Rejected';
+  status: EnrollmentStatus;
+  isActive: boolean;
   enrolledAt: string;
+}
+
+export enum EnrollmentStatus {
+  Pending = 0,
+  Approved = 1,
+  Rejected = 2
 }

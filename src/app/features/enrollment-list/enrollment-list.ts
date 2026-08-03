@@ -3,7 +3,7 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { EnrollmentStore } from '../../store/enrollment.store';
-import { Enrollment } from '../../models/enrollment.model';
+import { Enrollment, EnrollmentStatus } from '../../models/enrollment.model';
 @Component({
   selector: 'tms-enrollment-list',
   standalone: true,
@@ -12,6 +12,7 @@ import { Enrollment } from '../../models/enrollment.model';
   styleUrls: ['./enrollment-list.scss'],
 })
 export class EnrollmentListComponent {
+  EnrollmentStatus = EnrollmentStatus;
   store = inject(EnrollmentStore);
   displayedColumns = ['studentName', 'courseName', 'status', 'actions'];
 
@@ -20,8 +21,10 @@ export class EnrollmentListComponent {
   readonly paginator = viewChild.required(MatPaginator);
   readonly sort = viewChild.required(MatSort);
   constructor() {
+    this.store.loadEnrollments();
     effect(() => {
       this.dataSource.data = this.store.entities();
+      console.log('Enrollments:', this.dataSource.data);
     });
     effect(() => {
       this.dataSource.paginator = this.paginator();

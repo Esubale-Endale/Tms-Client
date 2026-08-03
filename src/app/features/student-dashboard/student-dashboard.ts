@@ -3,6 +3,7 @@ import { CourseService } from '../../services/course';
 import { Component, signal, computed, inject } from '@angular/core';
 import { CourseCardComponent } from '../../ui/course-card/course-card';
 import { Course } from '../../models/course.model';
+import { EnrollmentService } from '../../services/enrollment';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -13,6 +14,7 @@ import { Course } from '../../models/course.model';
 })
 export class StudentDashboardComponent {
   private api = inject(CourseService);
+  private enrollmentApi = inject(EnrollmentService);
 
   studentName = signal('Liya Kebede');
   earnedCredits = signal(116);
@@ -20,8 +22,10 @@ export class StudentDashboardComponent {
 
   handleEnroll(course: Course) {
     this.selectedCourse.set(course);
-    console.log('Enrollment requested for:', course.title);
-    console.log(course);
+    this.enrollmentApi.enroll(course.code).subscribe(() => {
+      console.log('Enrollment requested for:', course.title);
+      console.log(course);
+    });
   }
 
   graduationStatus = computed(() =>

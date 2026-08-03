@@ -7,6 +7,7 @@ import { Course, CourseDetail, PagedResponse } from '../models/course.model';
 export class CourseService {
   private http = inject(HttpClient);
   private baseUrl = 'https://localhost:7003/api/v1/courses';
+
   getAll(page = 1, pageSize = 12) {
     return this.http
       .get<PagedResponse<Course>>(this.baseUrl, {
