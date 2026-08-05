@@ -14,7 +14,7 @@ import { Enrollment, EnrollmentStatus } from '../../models/enrollment.model';
 export class EnrollmentListComponent {
   EnrollmentStatus = EnrollmentStatus;
   store = inject(EnrollmentStore);
-  displayedColumns = ['studentName', 'courseName', 'status', 'actions'];
+  displayedColumns = ['studentId', 'courseId', 'status', 'actions'];
 
   dataSource = new MatTableDataSource<Enrollment>();
 

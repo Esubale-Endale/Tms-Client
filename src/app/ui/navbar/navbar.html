@@ -1,10 +1,11 @@
-<div class="navbar m-3">
-  <ul class="">
-    <li class="inline-block list-style-none p-3"><a routerLink="/">Dashboard</a></li>
-    <li class="inline-block list-style-none p-3"><a routerLink="/enroll"> Enroll</a></li>
-    <li class="inline-block list-style-none p-3"><a routerLink="/enrollments">Enrollments</a></li>
-    <li class="inline-block list-style-none p-3">
-      <a routerLink="/instructor-dashboard">Instructor-Dashboard</a>
-    </li>
-  </ul>
-</div>
+<mat-toolbar >
+  <span>Tms Client</span>
+
+  <span class="example-spacer"></span>
+
+  <a mat-button routerLink="/">Dashboard </a>
+  <a mat-button routerLink="/students">Students</a>
+  <a mat-button routerLink="/courses">Courses</a>
+  <a mat-button routerLink="/enrollments">Enrollments</a>
+  <a mat-button routerLink="/instructor-dashboard">Instructor-Dashboard</a>
+</mat-toolbar>

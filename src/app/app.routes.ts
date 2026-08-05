@@ -12,12 +12,12 @@ export const routes: Routes = [
   {
     path: 'courses/:id',
     loadComponent: () =>
-      import('./features/course-detail/course-detail').then((m) => m.CourseDetail),
+      import('./features/courses/course-detail/course-detail').then((m) => m.CourseDetail),
   },
   {
-    path: 'enroll',
+    path: 'students',
     loadComponent: () =>
-      import('./features/enrollment-form/enrollment-form').then((m) => m.EnrollmentFormComponent),
+      import('./features/students/student-list/student-list').then((m) => m.StudentList),
   },
   {
     path: 'enrollments',
@@ -25,7 +25,10 @@ export const routes: Routes = [
       import('./features/enrollment-list/enrollment-list').then((m) => m.EnrollmentListComponent),
   },
   {
-    path:"instructor-dashboard",
-    loadComponent: () => import('./features/instructor-dashboard/instructor-dashboard').then(m => m.InstructorDashboard)
-  }
+    path: 'instructor-dashboard',
+    loadComponent: () =>
+      import('./features/instructor-dashboard/instructor-dashboard').then(
+        (m) => m.InstructorDashboard,
+      ),
+  },
 ];

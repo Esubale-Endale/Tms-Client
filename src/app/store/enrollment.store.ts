@@ -3,7 +3,7 @@ import { signalStore, withComputed, withMethods, patchState, withState } from '@
 import { withEntities, setAllEntities, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, concatMap, tap, catchError, EMPTY } from 'rxjs';
-import { EnrollmentService } from '../services/enrollment';
+import { EnrollmentService } from '../services/enrollment.service';
 import { Enrollment, EnrollmentStatus } from '../models/enrollment.model';
 
 export const EnrollmentStore = signalStore(
@@ -14,7 +14,9 @@ export const EnrollmentStore = signalStore(
   withEntities<Enrollment>(),
 
   withComputed((store) => ({
-    pendingCount: computed(() => store.entities().filter((e) => e.status === EnrollmentStatus.Pending).length),
+    pendingCount: computed(
+      () => store.entities().filter((e) => e.status === EnrollmentStatus.Pending).length,
+    ),
   })),
 
   withMethods((store, api = inject(EnrollmentService)) => ({
@@ -41,7 +43,10 @@ export const EnrollmentStore = signalStore(
         concatMap((id) =>
           api.approve(id).pipe(
             catchError((err) => {
-              patchState(store, updateEntity({ id, changes: { status: EnrollmentStatus.Pending } }));
+              patchState(
+                store,
+                updateEntity({ id, changes: { status: EnrollmentStatus.Pending } }),
+              );
               patchState(store, {
                 error: 'Server rejected the approval.Check enrollment constraints.',
               });
