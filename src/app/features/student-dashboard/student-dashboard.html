@@ -1,28 +1,95 @@
-<div class="dashboard">
-  <h1>Welcome, {{ studentName() }}</h1>
-  <p>Credits Earned: {{ earnedCredits() }}</p>
-  <p>Graduation Status: {{ graduationStatus() }}</p>
-  <button (click)="registerForClass()">Register for a Class (+3 credits)</button>
-
-  <h2>Course Catalog</h2>
-
-  @if (availableCourses().length == 0) {
-    <div class="empty-state">
-      <p>No courses are available this term. Check back during registration.</p>
+<div
+  class="min-h-screen bg-gradient-to-b from-indigo-50 via-slate-50 to-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8"
+>
+  <section
+    class="rounded-3xl border border-indigo-100 bg-white/80 backdrop-blur-sm p-5 shadow-lg shadow-indigo-100/50 sm:p-6"
+  >
+    <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-500">
+          Student progress overview
+        </p>
+        <h1 class="text-2xl font-bold text-slate-900">Welcome back, {{ studentName() }}</h1>
+        <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+          Stay on top of your academic progress and discover new classes that fit your goals.
+        </p>
+      </div>
+      <button
+        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-medium text-white shadow-md shadow-indigo-300/50 transition hover:from-indigo-500 hover:to-violet-500 hover:shadow-lg hover:shadow-indigo-300/60"
+        (click)="registerForClass()"
+      >
+        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-base"
+          >+</span
+        >
+        Register for a class
+      </button>
     </div>
-  } @else {
-    <div class="grid">
-      @for (course of availableCourses(); track course.id) {
-        <tms-course-card [course]="course" (enrollClicked)="handleEnroll($event)" />
-      } @empty {
-        <p>No results match your search.</p>
-      }
+
+    <div class="grid gap-3 md:grid-cols-2">
+      <article
+        class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4"
+      >
+        <span class="mb-1 block text-sm text-slate-500">Credits earned</span>
+        <strong class="text-xl font-bold text-slate-900">{{ earnedCredits() }}</strong>
+      </article>
+      <article
+        class="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-violet-50 p-4"
+      >
+        <span class="mb-1 block text-sm text-slate-500">Graduation status</span>
+        <strong class="text-xl font-bold text-slate-900">{{ graduationStatus() }}</strong>
+      </article>
     </div>
-  }
-  @if (selectedCourse(); as picked) {
-    <p class="selection-hint">
-      Last enrollment request: <strong>{{ picked.title }}</strong
-      >({{ picked.code }})
+  </section>
+
+  <section class="mt-6">
+    <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h2 class="text-lg font-bold text-slate-900">Course Catalog</h2>
+        <p class="text-sm text-slate-600">
+          Browse available offerings and enroll in the classes you want.
+        </p>
+      </div>
+      <span
+        class="rounded-full bg-gradient-to-r from-indigo-100 to-violet-100 px-3 py-1 text-sm font-semibold text-indigo-700"
+      >
+        +3 credits per registration
+      </span>
+    </div>
+
+    @if (coursesResource.isLoading()) {
+      <div
+        class="rounded-2xl border border-indigo-100 bg-white p-4 text-sm font-medium text-slate-600 shadow-sm"
+      >
+        Fetching courses from the server...
+      </div>
+    } @else if (coursesResource.error()) {
+      <div class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
+        Could not load courses. Make sure your .NET API is running.
+      </div>
+    } @else {
+      <div class="course-catalog-grid">
+        @for (course of coursesResource.value()!; track course.id) {
+          <tms-course-card [course]="course" (enrollClicked)="handleEnroll($event)" />
+        } @empty {
+          <p
+            class="rounded-2xl border border-dashed border-indigo-200 bg-white p-4 text-center text-sm text-slate-600"
+          >
+            No courses are available this term.
+          </p>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="mt-6">
+    <p
+      class="rounded-2xl border border-indigo-100 bg-gradient-to-r from-indigo-50 to-violet-50 px-4 py-3 text-sm text-indigo-700 shadow-sm"
+      role="status"
+    >
+      Last enrollment request:
+      <strong class="font-semibold text-slate-900">{{ selectedCourse()?.title }}</strong> ({{
+        selectedCourse()?.code
+      }})
     </p>
-  }
+  </section>
 </div>

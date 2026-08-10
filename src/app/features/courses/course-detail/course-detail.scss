@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(180deg, var(--app-surface-variant) 0%, var(--app-surface) 100%);
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--app-on-surface);
+}
+
+:host h1 {
+  margin: 0 0 1rem;
+  font-size: 2rem;
+}
+
+:host p {
+  margin: 0 0 1rem;
+  color: var(--mat-sys-on-surface-variant, #475569);
+}
+
+:host a {
+  color: var(--app-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+:host a:hover {
+  text-decoration: underline;
+}

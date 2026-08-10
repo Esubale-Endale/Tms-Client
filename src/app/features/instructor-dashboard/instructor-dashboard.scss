@@ -1,0 +1,90 @@
+:host {
+  display: block;
+  height: 100%;
+  padding: 2rem;
+  background: linear-gradient(180deg, var(--app-surface-variant) 0%, var(--app-surface) 100%);
+  font-family: Inter, system-ui, sans-serif;
+  color: var(--app-on-surface);
+}
+
+:host .dashboard-header {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--app-surface);
+  border-radius: 1.75rem;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--app-outline);
+}
+
+:host h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--app-on-surface);
+}
+
+:host .chart-section {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--app-surface);
+  border: 1px solid var(--app-outline);
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+}
+
+:host .skeleton-chart,
+:host .spinner {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: var(--app-surface-variant);
+  color: var(--mat-sys-on-surface-variant, #475569);
+  border: 1px dashed var(--app-outline);
+}
+
+:host table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: var(--app-surface);
+  border-radius: 1.25rem;
+  overflow: hidden;
+}
+
+:host th,
+:host td {
+  padding: 0.95rem 1rem;
+  text-align: left;
+}
+
+:host th {
+  background: var(--app-surface-variant);
+  color: var(--app-on-surface);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--app-outline);
+}
+
+:host td {
+  border-bottom: 1px solid var(--app-outline);
+  color: var(--mat-sys-on-surface-variant, #334155);
+}
+
+:host tr:last-child td {
+  border-bottom: none;
+}
+
+:host button {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.95rem;
+  color: var(--app-on-primary);
+  background: var(--app-primary);
+  cursor: pointer;
+}
+
+:host button:hover {
+  background: var(--app-primary);
+}
+
+:host ::ng-deep .mat-paginator {
+  margin-top: 1rem;
+}

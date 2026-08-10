@@ -6,13 +6,14 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './course-detail.html',
-  styleUrl: './course-detail.scss',
+  styleUrls: ['./course-detail.scss'],
 })
 export class CourseDetail {
   id = input.required<string>();
   constructor() {
     effect(() => {
       console.log(`Loading course detail for ID: ${this.id()}`);
+      console.log(this);
     });
   }
 }

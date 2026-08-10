@@ -1,1 +1,80 @@
-/* You can add global styles to this file, and also import other style files */
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@import 'tailwindcss';
+
+:root {
+  --app-surface: var(--mat-sys-surface);
+  --app-on-surface: var(--mat-sys-on-surface);
+  --app-surface-variant: var(--mat-sys-surface-variant, #eef2ff);
+  --app-outline: var(--mat-sys-outline, rgba(148, 163, 184, 0.3));
+  --app-primary: var(--mat-sys-primary);
+  --app-on-primary: var(--mat-sys-on-primary);
+  --app-secondary: var(--mat-sys-secondary);
+  --app-on-secondary: var(--mat-sys-on-secondary);
+  --app-error: var(--mat-sys-error);
+  --app-on-error: var(--mat-sys-on-error);
+}
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$cyan-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--app-surface);
+  color: var(--app-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  min-height: 100%;
+  font-family: Inter, system-ui, sans-serif;
+  background: linear-gradient(180deg, var(--app-surface-variant) 0%, var(--app-surface) 100%);
+}
+
+a {
+  color: var(--app-primary);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.8);
+  outline-offset: 2px;
+}
+
+* {
+  box-sizing: border-box;
+}

@@ -1,0 +1,74 @@
+<div class="min-h-screen">
+  <div class="page-shell">
+    <section class="form-card">
+      <header class="form-header">
+        <h2>Course Enrollment</h2>
+      </header>
+
+      @if (submitted()) {
+        <div class="success">Enrollment submitted. Check the console for the payload.</div>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="field-group">
+            <label for="studentId">Student ID</label>
+            <input id="studentId" formControlName="studentId" placeholder="e.g. STU-1234" />
+            @if (form.controls.studentId.touched && form.controls.studentId.invalid) {
+              <span class="error">Enter a valid Student ID (format: STU-0000)</span>
+            }
+          </div>
+
+          <div class="field-group">
+            <label for="courseId">Course ID</label>
+            <input
+              id="courseId"
+              formControlName="courseId"
+              placeholder="e.g. 1 (TMS course primary key)"
+            />
+            @if (form.controls.courseId.touched && form.controls.courseId.invalid) {
+              <span class="error">Course ID is required</span>
+            }
+          </div>
+
+          <div class="field-group">
+            <label for="term">Term</label>
+            <input id="term" formControlName="term" />
+          </div>
+
+          <div class="field-group">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" formControlName="notes"></textarea>
+          </div>
+
+          <div class="section-divider">
+            <h3>Backup Courses</h3>
+          </div>
+
+          <div class="backup-list">
+            @for (backup of backups.controls; track $index) {
+              <div class="backup-row">
+                <input [formControl]="backup" [placeholder]="'Backup course ' + ($index + 1)" />
+                <button type="button" class="secondary-button" (click)="removeBackup($index)">
+                  Remove
+                </button>
+              </div>
+            }
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="secondary-button" (click)="addBackup()">
+              Add Backup Course
+            </button>
+          </div>
+
+          <hr />
+
+          <div class="form-actions">
+            <button type="submit" class="primary-button" [disabled]="form.invalid">
+              Confirm Enrollment
+            </button>
+          </div>
+        </form>
+      }
+    </section>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="py-3 px-6">
+  <h2 mat-dialog-title>Register Student</h2>
+
+  <mat-dialog-content>
+    <section class="flex flex-col gap-4">
+      <mat-form-field>
+        <label for="name">Name</label>
+        <input id="name" matInput />
+      </mat-form-field>
+
+      <mat-form-field>
+        <label for="registration_number">Registration Number</label>
+
+        <input id="registration_number" matInput />
+      </mat-form-field>
+    </section>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="justify-between">
+    <button mat-button (click)="close()">Cancel</button>
+
+    <button mat-raised-button (click)="save()">Save</button>
+  </mat-dialog-actions>
+</div>
