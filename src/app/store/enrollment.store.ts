@@ -2,16 +2,15 @@ import { computed, inject } from '@angular/core';
 import { signalStore, withComputed, withMethods, patchState, withState } from '@ngrx/signals';
 import { withEntities, setAllEntities, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, concatMap, tap, catchError, EMPTY } from 'rxjs';
-import { EnrollmentService } from '../services/enrollment.service';
+import { pipe, concatMap, tap, catchError, EMPTY, switchMap } from 'rxjs';
+import { EnrollmentService } from '../services/enrollment';
 import { Enrollment, EnrollmentStatus } from '../models/enrollment.model';
+import { LiveSync } from '../services/live-sync';
 
 export const EnrollmentStore = signalStore(
   { providedIn: 'root' },
-
-  withState({ isLoading: false, error: null as string | null }),
-
   withEntities<Enrollment>(),
+  withState({ isLoading: false, error: null as string | null }),
 
   withComputed((store) => ({
     pendingCount: computed(
@@ -19,7 +18,32 @@ export const EnrollmentStore = signalStore(
     ),
   })),
 
-  withMethods((store, api = inject(EnrollmentService)) => ({
+  withMethods((
+    store,
+    api = inject(EnrollmentService),
+    sync = inject(LiveSync)
+  ) => ({
+    listenForLiveUpdates: rxMethod<void>(
+      pipe(
+        tap(() => sync.connect()),
+        switchMap(() => sync.events$),
+        tap(event => {
+            const id = Number(event.id);
+
+            const enrollment = store.entities().find((e) => e.id === id);
+
+            if (!enrollment) {
+              console.warn('Enrollment not found:', id);
+              return;
+            }
+          patchState(
+            store,
+            updateEntity({id: event.id, changes: {status : event.status}})
+          )
+        })
+      )
+    ),
+
     loadEnrollments: rxMethod<void>(
       pipe(
         tap(() => patchState(store, { isLoading: true, error: null })),

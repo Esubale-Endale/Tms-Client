@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { StudentService } from '../../../services/student.service';
+import { StudentService } from '../../../services/student';
 import { Student } from '../../../models/student.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';

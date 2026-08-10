@@ -27,8 +27,11 @@ export const routes: Routes = [
   {
     path: 'instructor-dashboard',
     loadComponent: () =>
-      import('./features/instructor-dashboard/instructor-dashboard').then(
-        (m) => m.InstructorDashboard,
-      ),
+      import('./features/instructor-dashboard/instructor-dashboard').then((m) => m.InstructorDashboard),
+  },
+  {
+    path: 'grade-submission',
+    loadComponent: () =>
+      import('./features/grade-submission/grade-submission').then((m) => m.GradeSubmission),
   },
 ];
