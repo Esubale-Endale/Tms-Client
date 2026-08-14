@@ -2,8 +2,8 @@ import { Component, viewChild, effect, inject } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { EnrollmentStore } from '../../store/enrollment.store';
-import { Enrollment, EnrollmentStatus } from '../../models/enrollment.model';
+import { EnrollmentStore } from '../../../store/enrollment.store';
+import { Enrollment, EnrollmentStatus } from '../../../models/enrollment.model';
 @Component({
   selector: 'tms-enrollment-list',
   standalone: true,

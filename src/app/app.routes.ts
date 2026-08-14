@@ -10,9 +10,8 @@ export const routes: Routes = [
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
-    path: 'courses/:id',
-    loadComponent: () =>
-      import('./features/courses/course-detail/course-detail').then((m) => m.CourseDetail),
+    path: 'login',
+    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
   },
   {
     path: 'courses/:id',
@@ -27,7 +26,9 @@ export const routes: Routes = [
   {
     path: 'enrollments',
     loadComponent: () =>
-      import('./features/enrollment-list/enrollment-list').then((m) => m.EnrollmentListComponent),
+      import('./features/enrollments/enrollment-list/enrollment-list').then(
+        (m) => m.EnrollmentListComponent,
+      ),
   },
   {
     path: 'instructor-dashboard',
