@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -25,13 +25,13 @@ export class Login {
 
     try {
       await this.authService.login({
-        username: this.username(),
+        email: this.username(),
         password: this.password(),
       });
 
       await this.router.navigate(['/dashboard']);
     } catch (error) {
-      this.error.set('Invalid username or password.');
+      this.error.set(this.authService.getErrorMessage(error, 'Invalid email or password.'));
     } finally {
       this.loading.set(false);
     }

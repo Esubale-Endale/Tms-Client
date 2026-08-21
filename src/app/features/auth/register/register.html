@@ -1,0 +1,47 @@
+<main class="auth-page">
+  <section class="auth-panel">
+    <div class="eyebrow">TMS identity</div>
+    <h1>Create your account</h1>
+    <p class="intro">Use an enterprise-ready password with at least 12 characters.</p>
+
+    @if (error()) {
+      <p class="error" role="alert">{{ error() }}</p>
+    }
+    @if (success()) {
+      <p class="success" role="status">{{ success() }}</p>
+    }
+
+    <form (ngSubmit)="register()">
+      <div class="field-grid">
+        <label>
+          First name
+          <input type="text" name="firstName" [ngModel]="form().firstName" (ngModelChange)="update('firstName', $event)" required />
+        </label>
+        <label>
+          Last name
+          <input type="text" name="lastName" [ngModel]="form().lastName" (ngModelChange)="update('lastName', $event)" required />
+        </label>
+      </div>
+      <label>
+        Email address
+        <input type="email" name="email" [ngModel]="form().email" (ngModelChange)="update('email', $event)" required />
+      </label>
+      <label>
+        Account role
+        <select name="role" [ngModel]="form().role" (ngModelChange)="update('role', $event)">
+          <option value="Student">Student</option>
+          <option value="Instructor">Instructor</option>
+        </select>
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" [ngModel]="form().password" (ngModelChange)="update('password', $event)" minlength="12" required />
+      </label>
+      <button class="primary-action" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Creating account...' : 'Create account' }}
+      </button>
+    </form>
+
+    <p class="switch-auth">Already registered? <a routerLink="/login">Sign in</a></p>
+  </section>
+</main>

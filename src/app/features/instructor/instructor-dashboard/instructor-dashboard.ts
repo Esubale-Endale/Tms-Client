@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { AnalyticsChart } from '../../ui/analytics-chart/analytics-chart';
-import { EnrollmentStore } from '../../store/enrollment.store';
+import { AnalyticsChart } from '../../../ui/analytics-chart/analytics-chart';
+import { EnrollmentStore } from '../../../store/enrollment.store';
 
 @Component({
   selector: 'app-instructor-dashboard',

@@ -1,4 +1,4 @@
-<mat-toolbar >
+<mat-toolbar>
   <span>Tms Client</span>
 
   <span class="example-spacer"></span>
@@ -9,4 +9,11 @@
   <a mat-button routerLink="/enrollments">Enrollments</a>
   <a mat-button routerLink="/instructor-dashboard">Instructor-Dashboard</a>
   <a mat-button routerLink="/grade-submission">Grade Submission</a>
+  @if (authService.currentUser(); as user) {
+    <span class="identity">{{ user.displayName }}</span>
+    <button mat-button type="button" (click)="refreshSession()">Refresh session</button>
+    <button mat-button type="button" (click)="logout()">Sign out</button>
+  } @else {
+    <a mat-button routerLink="/login">Sign in</a>
+  }
 </mat-toolbar>

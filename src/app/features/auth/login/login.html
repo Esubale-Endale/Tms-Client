@@ -1,20 +1,23 @@
-<div class="flex justify-center items-center w-screen h-screen">
-  <div class="m-auto border p-4" style="max-width: 400px">
-    <h1>Login</h1>
+<main class="auth-page">
+  <section class="auth-panel">
+    <div class="eyebrow">TMS identity</div>
+    <h1>Welcome back</h1>
+    <p class="intro">Sign in to manage courses, enrollments, and grades.</p>
 
     @if (error()) {
-      <p class="error">
+      <p class="error" role="alert">
         {{ error() }}
       </p>
     }
 
     <form (ngSubmit)="login()">
       <div>
-        <label>Username</label>
+        <label for="email">Email address</label>
 
         <input
-          type="text"
-          name="username"
+          id="email"
+          type="email"
+          name="email"
           [ngModel]="username()"
           (ngModelChange)="username.set($event)"
           required
@@ -22,9 +25,10 @@
       </div>
 
       <div>
-        <label>Password</label>
+        <label for="password">Password</label>
 
         <input
+          id="password"
           type="password"
           name="password"
           [ngModel]="password()"
@@ -33,9 +37,10 @@
         />
       </div>
 
-      <button type="submit" [disabled]="loading()">
+      <button class="primary-action" type="submit" [disabled]="loading()">
         {{ loading() ? 'Logging in...' : 'Login' }}
       </button>
     </form>
-  </div>
-</div>
+    <p class="switch-auth">New to TMS? <a routerLink="/register">Create an account</a></p>
+  </section>
+</main>

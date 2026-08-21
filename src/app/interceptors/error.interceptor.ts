@@ -9,7 +9,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((err: HttpErrorResponse) => {
       // Extract C# RFC 7807 ProblemDetails detail property
       const detailMessage = err.error?.detail ?? 'A system erroroccurred. Please try again.';
-      if (err.status === 401) {
+      if (err.status === 401 && !req.url.includes('/api/auth/')) {
         // Redirect expired or unauthenticated sessions back to login
         router.navigate(['/login']);
       } else {
