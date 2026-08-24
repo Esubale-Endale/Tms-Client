@@ -4,16 +4,16 @@ import { AdminCourseList } from './features/admin/admin-course-list/admin-course
 
 export const routes: Routes = [
   {
-    path: 'dashboard',
-    loadComponent: () =>
-      import('./features/student-dashboard/student-dashboard').then(
-        (m) => m.StudentDashboardComponent,
-      ),
+    path: 'login',
+    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
-    path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/students/student-dashboard/student-dashboard').then(
+        (m) => m.StudentDashboardComponent,
+      ),
   },
   {
     path: 'register',

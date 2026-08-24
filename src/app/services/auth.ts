@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 export interface TmsUser {
   displayName: string;
@@ -33,7 +34,9 @@ export class AuthService {
   }
 
   async register(request: RegisterRequest): Promise<void> {
-    await firstValueFrom(this.http.post('/api/auth/register', request));
+    await firstValueFrom(
+      this.http.post(environment.baseUrl + environment.apiUrlv2 + '/auth/register', request),
+    );
   }
 
   hasRole(role: string): boolean {
@@ -42,13 +45,18 @@ export class AuthService {
   }
 
   async login(credentials: LoginRequest): Promise<void> {
-    const res = await firstValueFrom(this.http.post<AuthResponse>('/api/auth/login', credentials));
+    const res = await firstValueFrom(
+      this.http.post<AuthResponse>(
+        environment.baseUrl + environment.apiUrlv2 + '/auth/login',
+        credentials,
+      ),
+    );
     this.accessToken.set(res.accessToken);
     // Decode user payload from JWT (or fetch /api/auth/me)
     const payload = JSON.parse(atob(res.accessToken.split('.')[1]));
     this.currentUser.set({
       email: payload.email || payload.sub,
-      displayName: payload.name || payload.email || 'User',
+      displayName: payload.FirstName || payload.name || payload.email || 'User',
       role:
         payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
         payload.role ||

@@ -13,8 +13,8 @@ export class Login {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  username = signal('');
-  password = signal('');
+  username = signal('esu3@esu.net');
+  password = signal('Password@123');
 
   loading = signal(false);
   error = signal('');

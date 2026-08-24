@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment.development';
 @Service()
 export class CourseService {
   private http = inject(HttpClient);
-  private readonly base = `${environment.baseUlr}${environment.apiUrl}/courses`;
+  private readonly base = `${environment.baseUrl}${environment.apiUrl}/courses`;
 
   getAll(page = 1, pageSize = 12) {
     return this.http
