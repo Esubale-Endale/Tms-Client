@@ -22,7 +22,7 @@ export class StudentForm {
   readonly registrationNumber = signal('');
 
   constructor(private dialogRef: MatDialogRef<StudentForm>) {}
-  
+
   close() {}
   save() {}
 }

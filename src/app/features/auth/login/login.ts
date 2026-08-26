@@ -13,8 +13,8 @@ export class Login {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  username = signal('esu3@esu.net');
-  password = signal('Password@123');
+  username = signal('');
+  password = signal('!234QWERasdf');
 
   loading = signal(false);
   error = signal('');
@@ -29,7 +29,13 @@ export class Login {
         password: this.password(),
       });
 
-      await this.router.navigate(['/dashboard']);
+      this.authService.currentUser()?.role === 'Student'
+        ? await this.router.navigate(['/student'])
+        : this.authService.currentUser()?.role === 'Admin'
+          ? await this.router.navigate(['/admin'])
+          : this.authService.currentUser()?.role === 'Instructor'
+            ? await this.router.navigate(['/instructor'])
+            : console.log(this.authService.currentUser()?.role);
     } catch (error) {
       this.error.set(this.authService.getErrorMessage(error, 'Invalid email or password.'));
     } finally {

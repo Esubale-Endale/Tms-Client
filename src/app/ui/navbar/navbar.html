@@ -9,11 +9,10 @@
     }
     @if (user.role === 'Student') {
       <a mat-button routerLink="/student">Student</a>
-      <a mat-button routerLink="/student/dashboard">Dashboard </a>
+      <a mat-button routerLink="/student/form">Form</a>
     }
     @if (user.role === 'Instructor') {
       <a mat-button routerLink="/instructor">Instructor</a>
-      <a mat-button routerLink="/instructor/dashboard">Instructor-Dashboard</a>
       <a mat-button routerLink="/students">Students</a>
       <a mat-button routerLink="/enrollments">Enrollments</a>
       <a mat-button routerLink="/courses">Courses</a>

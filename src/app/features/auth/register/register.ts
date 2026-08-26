@@ -18,7 +18,7 @@ export class Register {
     password: '',
     firstName: '',
     lastName: '',
-    role: 'Student',
+    role: 'Admin',
   });
   loading = signal(false);
   error = signal('');
