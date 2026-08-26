@@ -31,7 +31,8 @@ export class Login {
 
       this.authService.currentUser()?.role === 'Student'
         ? await this.router.navigate(['/student'])
-        : this.authService.currentUser()?.role === 'Admin'
+        : this.authService.currentUser()?.role === 'Admin' ||
+            this.authService.currentUser()?.role === 'admin'
           ? await this.router.navigate(['/admin'])
           : this.authService.currentUser()?.role === 'Instructor'
             ? await this.router.navigate(['/instructor'])

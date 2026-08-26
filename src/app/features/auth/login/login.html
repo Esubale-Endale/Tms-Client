@@ -5,36 +5,18 @@
     <p class="intro">Sign in to manage courses, enrollments, and grades.</p>
 
     @if (error()) {
-      <p class="error" role="alert">
-        {{ error() }}
-      </p>
+      <p class="error" role="alert">{{ error() }}</p>
     }
 
     <form (ngSubmit)="login()">
       <div>
         <label for="email">Email address</label>
-
-        <input
-          id="email"
-          type="email"
-          name="email"
-          [ngModel]="username()"
-          (ngModelChange)="username.set($event)"
-          required
-        />
+        <input id="email" type="email" name="email" [ngModel]="username()" (ngModelChange)="username.set($event)" required />
       </div>
 
       <div>
         <label for="password">Password</label>
-
-        <input
-          id="password"
-          type="password"
-          name="password"
-          [ngModel]="password()"
-          (ngModelChange)="password.set($event)"
-          required
-        />
+        <input id="password" type="password" name="password" [ngModel]="password()" (ngModelChange)="password.set($event)" required />
       </div>
 
       <button class="primary-action" type="submit" [disabled]="loading()">

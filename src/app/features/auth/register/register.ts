@@ -13,13 +13,7 @@ export class Register {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  form = signal<RegisterRequest>({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    role: 'Admin',
-  });
+  form = signal<RegisterRequest>({ email: '', password: '', firstName: '', lastName: '', role: 'Student' });
   loading = signal(false);
   error = signal('');
   success = signal('');

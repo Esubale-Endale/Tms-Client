@@ -27,6 +27,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private accessToken = signal<string | null>(null);
   private readonly refreshTokenKey = 'tms.refresh-token';
+  private refreshToken = signal<string | null>(sessionStorage.getItem(this.refreshTokenKey));
   currentUser = signal<TmsUser | null>(null);
 
   getAccessToken(): string | null {
@@ -34,9 +35,7 @@ export class AuthService {
   }
 
   async register(request: RegisterRequest): Promise<void> {
-    await firstValueFrom(
-      this.http.post(environment.baseUrl + environment.apiUrlv2 + '/auth/register', request),
-    );
+    await firstValueFrom(this.http.post(environment.baseUrl + environment.apiUrlv2 + '/auth/register', request));
   }
 
   hasRole(role: string): boolean {
@@ -45,35 +44,34 @@ export class AuthService {
   }
 
   async login(credentials: LoginRequest): Promise<void> {
-    const res = await firstValueFrom(
-      this.http.post<AuthResponse>(
-        environment.baseUrl + environment.apiUrlv2 + '/auth/login',
-        credentials,
-      ),
-    );
+    const res = await firstValueFrom(this.http.post<AuthResponse>(environment.baseUrl + environment.apiUrlv2 + '/auth/login', credentials));
+    console.log('Login successful:', res);
     this.accessToken.set(res.accessToken);
+    this.refreshToken.set(res.refreshToken);
     // Decode user payload from JWT (or fetch /api/auth/me)
     const payload = JSON.parse(atob(res.accessToken.split('.')[1]));
     this.currentUser.set({
       email: payload.email || payload.sub,
       displayName: payload.FirstName || payload.name || payload.email || 'User',
-      role:
-        payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
-        payload.role ||
-        'Student',
+      role: payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload.role || 'Student',
     });
   }
 
   async refresh(): Promise<void> {
-    const refreshToken = sessionStorage.getItem(this.refreshTokenKey);
+    const refreshToken = this.refreshToken();
     if (!refreshToken) {
       throw new Error('No refresh token is available.');
     }
-    const tokens = await firstValueFrom(
-      this.http.post<AuthResponse>('/api/auth/refresh', { refreshToken }),
-    );
+    const tokens = await firstValueFrom(this.http.post<AuthResponse>(environment.baseUrl + environment.apiUrlv2 + '/auth/refresh', { refreshToken }));
     this.storeTokens(tokens);
     this.currentUser.set(this.userFromToken(tokens.accessToken));
+  }
+
+  async profile(): Promise<void> {
+    const user = await firstValueFrom(this.http.get<TmsUser>(environment.baseUrl + environment.apiUrlv2 + '/auth/me'));
+    if (user) {
+      console.log('User profile:', user);
+    }
   }
 
   logout(): void {
@@ -86,9 +84,7 @@ export class AuthService {
       return fallback;
     }
     if (error.status === 423) {
-      return (
-        error.error?.detail ?? 'Account locked after too many failed attempts. Try again later.'
-      );
+      return error.error?.detail ?? 'Account locked after too many failed attempts. Try again later.';
     }
     if (Array.isArray(error.error?.errors)) {
       return error.error.errors.join(' ');
@@ -104,17 +100,10 @@ export class AuthService {
   private userFromToken(token: string): TmsUser {
     const payload = JSON.parse(atob(token.split('.')[1])) as Record<string, string | string[]>;
     const roles = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    console.log('Decoded JWT payload:', payload);
     return {
-      displayName: String(
-        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ??
-          payload['sub'] ??
-          '',
-      ),
-      email: String(
-        payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ??
-          payload['email'] ??
-          '',
-      ),
+      displayName: String(payload['FirstName']) || String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? payload['sub'] ?? ''),
+      email: String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? payload['email'] ?? ''),
       role: String(roles[0]) ?? '',
     };
   }

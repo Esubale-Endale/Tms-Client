@@ -1,1 +1,27 @@
-
+<h1>Courses</h1>
+<p>Welcome to the Courses page!</p>
+<div class="div">
+  @if (courses.isLoading()) {
+    <div
+      class="rounded-2xl border border-indigo-100 bg-white p-4 text-sm font-medium text-slate-600 shadow-sm"
+    >
+      Fetching courses from the server...
+    </div>
+  } @else if (courses.error()) {
+    <div class="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-700">
+      Could not load courses. Make sure your .NET API is running.
+    </div>
+  } @else {
+    <div class="course-catalog-grid">
+      @for (course of courses.value()!; track course.id) {
+        <tms-course-card [course]="course" (enrollClicked)="handleEnroll($event)" />
+      } @empty {
+        <p
+          class="rounded-2xl border border-dashed border-indigo-200 bg-white p-4 text-center text-sm text-slate-600"
+        >
+          No courses are available this term.
+        </p>
+      }
+    </div>
+  }
+</div>

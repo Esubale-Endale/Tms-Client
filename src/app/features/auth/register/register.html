@@ -1,7 +1,7 @@
 <main class="auth-page">
   <section class="auth-panel">
     <div class="eyebrow">TMS identity</div>
-    <h1 >Create your account</h1>
+    <h1>Create your account</h1>
     <p class="intro">Use an enterprise-ready password with at least 12 characters.</p>
 
     @if (error()) {
@@ -14,18 +14,13 @@
     <form (ngSubmit)="register()">
       <div class="field-grid">
         <label>
-          First name
-          <input type="text" name="firstName" [ngModel]="form().firstName" (ngModelChange)="update('firstName', $event)" required />
+          First name <input type="text" name="firstName" [ngModel]="form().firstName" (ngModelChange)="update('firstName', $event)" required />
         </label>
         <label>
-          Last name
-          <input type="text" name="lastName" [ngModel]="form().lastName" (ngModelChange)="update('lastName', $event)" required />
+          Last name <input type="text" name="lastName" [ngModel]="form().lastName" (ngModelChange)="update('lastName', $event)" required />
         </label>
       </div>
-      <label>
-        Email address
-        <input type="email" name="email" [ngModel]="form().email" (ngModelChange)="update('email', $event)" required />
-      </label>
+      <label> Email address <input type="email" name="email" [ngModel]="form().email" (ngModelChange)="update('email', $event)" required /> </label>
       <label>
         Account role
         <select name="role" [ngModel]="form().role" (ngModelChange)="update('role', $event)">

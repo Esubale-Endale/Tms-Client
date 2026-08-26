@@ -28,4 +28,8 @@ export class Navbar {
     this.authService.logout();
     void this.router.navigate(['/login']);
   }
+
+  async profile(): Promise<void> {
+    await this.authService.profile();
+  }
 }

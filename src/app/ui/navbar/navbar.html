@@ -4,24 +4,25 @@
   <span class="example-spacer"></span>
   @if (authService.currentUser(); as user) {
     @if (user.role === 'Admin') {
-      <a mat-button routerLink="/admin">Admin</a>
-      <a mat-button routerLink="/students">Students</a>
+      <a mat-button routerLink="/admin">Dashboard</a>
+      <a mat-button routerLink="/admin/students">Students</a>
+      <a mat-button routerLink="/admin/courses">Courses</a>
     }
     @if (user.role === 'Student') {
       <a mat-button routerLink="/student">Student</a>
-      <a mat-button routerLink="/student/form">Form</a>
+      <a mat-button routerLink="/student/courses">Courses</a>
     }
     @if (user.role === 'Instructor') {
       <a mat-button routerLink="/instructor">Instructor</a>
-      <a mat-button routerLink="/students">Students</a>
-      <a mat-button routerLink="/enrollments">Enrollments</a>
-      <a mat-button routerLink="/courses">Courses</a>
-      <a mat-button routerLink="/grade-submission">Grade Submission</a>
+      <a mat-button routerLink="/instructor/students">Students</a>
+      <a mat-button routerLink="/instructor/enrollments">Enrollments</a>
+      <a mat-button routerLink="/instructor/courses">Courses</a>
+      <a mat-button routerLink="/instructor/grade-submission">Grade Submission</a>
     }
-    <!-- <button mat-button type="button" (click)="refreshSession()">Refresh session</button> -->
     <span class="example-spacer"></span>
-    <span class="identity">{{ user.displayName }}</span>
+    <span class="identity" (click)="profile()">{{ user.displayName }}</span>
     <button mat-button type="button" (click)="logout()">Sign out</button>
+    <button mat-button type="button" (click)="refreshSession()">Refresh session</button>
   } @else {
     <a mat-button routerLink="/login">Sign in</a>
   }

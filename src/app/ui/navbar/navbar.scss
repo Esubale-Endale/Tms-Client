@@ -4,6 +4,8 @@
 
 .identity {
   margin: 0 .5rem;
+  cursor: pointer;
+  background-color: var(--mat-sys-surface-variant);
   color: var(--mat-sys-on-surface-variant);
   font-size: .85rem;
 }
