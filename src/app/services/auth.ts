@@ -22,6 +22,8 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
+const apiUrl = environment.baseUrl + environment.apiUrlv2;
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
@@ -35,7 +37,7 @@ export class AuthService {
   }
 
   async register(request: RegisterRequest): Promise<void> {
-    await firstValueFrom(this.http.post(environment.baseUrl + environment.apiUrlv2 + '/auth/register', request));
+    await firstValueFrom(this.http.post(apiUrl + '/auth/register', request));
   }
 
   hasRole(role: string): boolean {
@@ -44,33 +46,27 @@ export class AuthService {
   }
 
   async login(credentials: LoginRequest): Promise<void> {
-    const res = await firstValueFrom(this.http.post<AuthResponse>(environment.baseUrl + environment.apiUrlv2 + '/auth/login', credentials));
-    console.log('Login successful:', res);
-    this.accessToken.set(res.accessToken);
-    this.refreshToken.set(res.refreshToken);
-    // Decode user payload from JWT (or fetch /api/auth/me)
-    const payload = JSON.parse(atob(res.accessToken.split('.')[1]));
-    this.currentUser.set({
-      email: payload.email || payload.sub,
-      displayName: payload.FirstName || payload.name || payload.email || 'User',
-      role: payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || payload.role || 'Student',
-    });
+    const res = await firstValueFrom(this.http.post<AuthResponse>(apiUrl + '/auth/login', credentials));
+    this.storeTokens(res);
+    this.setUserFromToken(res.accessToken);
   }
 
   async refresh(): Promise<void> {
     const refreshToken = this.refreshToken();
+
     if (!refreshToken) {
       throw new Error('No refresh token is available.');
     }
-    const tokens = await firstValueFrom(this.http.post<AuthResponse>(environment.baseUrl + environment.apiUrlv2 + '/auth/refresh', { refreshToken }));
+
+    const tokens = await firstValueFrom(this.http.post<AuthResponse>(apiUrl + '/auth/refresh', { refreshToken }));
     this.storeTokens(tokens);
-    this.currentUser.set(this.userFromToken(tokens.accessToken));
+    this.setUserFromToken(tokens.accessToken);
   }
 
   async profile(): Promise<void> {
-    const user = await firstValueFrom(this.http.get<TmsUser>(environment.baseUrl + environment.apiUrlv2 + '/auth/me'));
+    const user = await firstValueFrom(this.http.get<TmsUser>(apiUrl + '/auth/me'));
     if (user) {
-      console.log('User profile:', user);
+      this.currentUser.set(user);
     }
   }
 
@@ -97,14 +93,27 @@ export class AuthService {
     sessionStorage.setItem(this.refreshTokenKey, tokens.refreshToken);
   }
 
-  private userFromToken(token: string): TmsUser {
+  private setUserFromToken(token: string): void {
     const payload = JSON.parse(atob(token.split('.')[1])) as Record<string, string | string[]>;
     const roles = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-    console.log('Decoded JWT payload:', payload);
-    return {
-      displayName: String(payload['FirstName']) || String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? payload['sub'] ?? ''),
+
+    this.currentUser.set({
+      displayName:
+        String(payload['FirstName']) ||
+        String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? payload['sub'] ?? ''),
       email: String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? payload['email'] ?? ''),
       role: String(roles[0]) ?? '',
-    };
+    });
+  }
+
+  async restoreSession(): Promise<void> {
+    try {
+      await this.refresh();
+      await this.profile();
+    } catch {
+      this.accessToken.set(null);
+      this.currentUser.set(null);
+      sessionStorage.removeItem(this.refreshTokenKey);
+    }
   }
 }

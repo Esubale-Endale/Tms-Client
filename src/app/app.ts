@@ -15,6 +15,10 @@ export class App {
   private store = inject(EnrollmentStore);
   private authService = inject(AuthService);
 
+  constructor() {
+    this.authService.restoreSession();
+  }
+
   ngOnInit() {
     if (this.authService.currentUser()) {
       this.store.loadEnrollments();
