@@ -12,3 +12,16 @@ export const roleGuard = (requiredRole: string): CanActivateFn => {
     return router.createUrlTree(['/unauthorized']);
   };
 };
+
+export const guestGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  const user = auth.currentUser();
+
+  console.log("from guest guard user :", user)
+  if (!user) {
+    return true;
+  }
+  return router.createUrlTree([`/${user.role.toLowerCase()}`]);
+};

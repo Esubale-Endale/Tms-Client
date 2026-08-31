@@ -1,9 +1,16 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
+interface ProfileResponse {
+  email: string;
+  firstName: string;
+  lastName: string;
+  userId: string;
+}
 export interface TmsUser {
+  userId: string;
   displayName: string;
   email: string;
   role: string;
@@ -22,7 +29,7 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-const apiUrl = environment.baseUrl + environment.apiUrlv2;
+const apiUrl = environment.baseUrl + environment.apiUrlv2 + '/auth';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -31,6 +38,11 @@ export class AuthService {
   private readonly refreshTokenKey = 'tms.refresh-token';
   private refreshToken = signal<string | null>(sessionStorage.getItem(this.refreshTokenKey));
   currentUser = signal<TmsUser | null>(null);
+
+  //roleCheck
+  isAdmin = computed(() => this.currentUser()?.role === 'Admin');
+  isStudent = computed(() => this.currentUser()?.role === 'Student');
+  isInstructor = computed(() => this.currentUser()?.role === 'Instructor');
 
   getAccessToken(): string | null {
     return this.accessToken();
@@ -46,7 +58,7 @@ export class AuthService {
   }
 
   async login(credentials: LoginRequest): Promise<void> {
-    const res = await firstValueFrom(this.http.post<AuthResponse>(apiUrl + '/auth/login', credentials));
+    const res = await firstValueFrom(this.http.post<AuthResponse>(apiUrl + '/login', credentials));
     this.storeTokens(res);
     this.setUserFromToken(res.accessToken);
   }
@@ -58,15 +70,16 @@ export class AuthService {
       throw new Error('No refresh token is available.');
     }
 
-    const tokens = await firstValueFrom(this.http.post<AuthResponse>(apiUrl + '/auth/refresh', { refreshToken }));
+    const tokens = await firstValueFrom(this.http.post<AuthResponse>(apiUrl + '/refresh', { refreshToken }));
     this.storeTokens(tokens);
     this.setUserFromToken(tokens.accessToken);
   }
 
   async profile(): Promise<void> {
-    const user = await firstValueFrom(this.http.get<TmsUser>(apiUrl + '/auth/me'));
+    const user = await firstValueFrom(this.http.get<ProfileResponse>(apiUrl + '/me'));
+
     if (user) {
-      this.currentUser.set(user);
+      this.currentUser.set({ ...user, role: this.currentUser()?.role ?? '', displayName: user.firstName });
     }
   }
 
@@ -98,11 +111,10 @@ export class AuthService {
     const roles = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
 
     this.currentUser.set({
-      displayName:
-        String(payload['FirstName']) ||
-        String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? payload['sub'] ?? ''),
+      userId: String(payload['sub']),
+      displayName: String(payload['FirstName']) || String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? ''),
       email: String(payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? payload['email'] ?? ''),
-      role: String(roles[0]) ?? '',
+      role: String(roles) ?? '',
     });
   }
 

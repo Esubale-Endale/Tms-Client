@@ -1,15 +1,14 @@
+import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { CourseService } from '../../../services/course';
-import { Component, signal, computed, inject } from '@angular/core';
-import { CourseCardComponent } from '../../../ui/course-card/course-card';
 import { Course } from '../../../models/course.model';
-import { EnrollmentService } from '../../../services/enrollment';
 import { AuthService } from '../../../services/auth';
+import { CourseService } from '../../../services/course';
+import { EnrollmentService } from '../../../services/enrollment';
 
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CourseCardComponent],
+  imports: [],
   templateUrl: './student-dashboard.html',
   styleUrls: ['./student-dashboard.scss'],
 })

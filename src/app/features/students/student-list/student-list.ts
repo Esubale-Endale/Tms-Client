@@ -4,7 +4,7 @@ import { StudentService } from '../../../services/student';
 import { Student } from '../../../models/student.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { StudentForm } from '../../instructor/student-form/student-form';
+import { StudentForm } from '../student-form/student-form';
 
 @Component({
   selector: 'app-student-list',
@@ -25,7 +25,7 @@ export class StudentList {
     });
 
     effect(() => {
-      console.log('Students:', this.dataSource.data);
+      console.log('Students at student-list:', this.dataSource.data);
     });
   }
 

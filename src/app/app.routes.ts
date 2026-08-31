@@ -1,19 +1,27 @@
 import { Routes } from '@angular/router';
+import { guestGuard, roleGuard } from './guards/role.guard';
 
 const authRoutes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
     loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
+    canActivate: [guestGuard],
   },
   {
     path: 'register',
     loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
+    canActivate: [guestGuard],
   },
 ];
 const studentRoutes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./features/students/student-dashboard/student-dashboard').then((m) => m.StudentDashboardComponent),
+    loadComponent: () => import('./features/student/student-dashboard/student-dashboard').then((m) => m.StudentDashboardComponent),
+  },
+  {
+    path: 'enrollments',
+    loadComponent: () => import('./features/student/schedule/schedule').then((m) => m.Schedule),
   },
   {
     path: 'courses',
@@ -36,11 +44,11 @@ const instructorRoutes: Routes = [
   },
   {
     path: 'students',
-    loadComponent: () => import('./features/instructor/student-list/student-list').then((m) => m.StudentList),
+    loadComponent: () => import('./features/students/student-list/student-list').then((m) => m.StudentList),
   },
   {
     path: 'grade-submission',
-    loadComponent: () => import('./features/grade-submission/grade-submission').then((m) => m.GradeSubmission),
+    loadComponent: () => import('./features/courses/grade-submission/grade-submission').then((m) => m.GradeSubmission),
   },
 ];
 const adminRoutes: Routes = [
@@ -50,7 +58,7 @@ const adminRoutes: Routes = [
   },
   {
     path: 'courses',
-    loadComponent: () => import('./features/admin/admin-course-list/admin-course-list').then((m) => m.AdminCourseList),
+    loadComponent: () => import('./features/courses/course-list/course-list').then((m) => m.CourseList),
   },
   {
     path: 'courses/:id',
@@ -58,7 +66,7 @@ const adminRoutes: Routes = [
   },
   {
     path: 'students',
-    loadComponent: () => import('./features/instructor/student-list/student-list').then((m) => m.StudentList),
+    loadComponent: () => import('./features/students/student-list/student-list').then((m) => m.StudentList),
   },
   {
     path: 'enrollments',
@@ -72,18 +80,21 @@ export const routes: Routes = [
   {
     path: 'student',
     loadComponent: () => import('./layouts/student-layout/student-layout').then((m) => m.StudentLayout),
+    canActivate: [roleGuard('Student')],
     children: studentRoutes,
   },
   // Instructor routes
   {
     path: 'instructor',
     loadComponent: () => import('./layouts/instructor-layout/instructor-layout').then((m) => m.InstructorLayout),
+    canActivate: [roleGuard('Instructor')],
     children: instructorRoutes,
   },
   // Admin routes
   {
     path: 'admin',
     loadComponent: () => import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayout),
+    canActivate: [roleGuard('Admin')],
     children: adminRoutes,
   },
 ];

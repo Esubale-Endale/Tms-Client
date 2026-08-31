@@ -1,6 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Course } from '../../models/course.model';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'tms-course-card',
@@ -10,8 +11,8 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
 })
 export class CourseCardComponent {
+  auth = inject(AuthService);
   course = input.required<Course>();
   enrollClicked = output<Course>();
   deleteCourse = output<number>();
-  auth = { hasRole: (role: string) => false };
 }

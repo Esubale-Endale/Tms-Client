@@ -11,13 +11,7 @@
   <ng-container matColumnDef="status">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
     <td mat-cell *matCellDef="let row">
-      {{
-        row.status === EnrollmentStatus.Pending
-          ? 'Pending'
-          : row.status === EnrollmentStatus.Approved
-            ? 'Approved'
-            : 'Rejected'
-      }}
+      {{ row.status === EnrollmentStatus.Pending ? 'Pending' : row.status === EnrollmentStatus.Approved ? 'Approved' : 'Rejected' }}
     </td>
   </ng-container>
   <ng-container matColumnDef="actions">

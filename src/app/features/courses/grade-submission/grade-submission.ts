@@ -1,22 +1,33 @@
 import { Component, inject } from '@angular/core';
-import { GradePayload, GradeService } from '../../services/grade';
+import { GradePayload, GradeService } from '../../../services/grade';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { exhaustMap, Subject } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatFormField, MatLabel, MatError } from "@angular/material/form-field";
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from "@angular/material/card"
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInput } from '@angular/material/input';
-
 
 @Component({
   selector: 'app-grade-submission',
   standalone: true,
-  imports: [MatFormField, MatLabel, MatError, MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatProgressSpinnerModule, MatCardActions, MatInput, ReactiveFormsModule],
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardSubtitle,
+    MatCardContent,
+    MatProgressSpinnerModule,
+    MatCardActions,
+    MatInput,
+    ReactiveFormsModule,
+  ],
   templateUrl: './grade-submission.html',
   styleUrl: './grade-submission.scss',
 })
-
 export class GradeSubmission {
   private api = inject(GradeService);
   private fb = inject(FormBuilder);

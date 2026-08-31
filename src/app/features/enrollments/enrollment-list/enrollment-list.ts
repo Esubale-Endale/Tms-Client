@@ -20,17 +20,19 @@ export class EnrollmentListComponent {
 
   readonly paginator = viewChild.required(MatPaginator);
   readonly sort = viewChild.required(MatSort);
+
   constructor() {
     this.store.loadEnrollments();
     effect(() => {
       this.dataSource.data = this.store.entities();
-      console.log('Enrollments:', this.dataSource.data);
+      // console.log('Enrollments:', this.dataSource.data);
     });
     effect(() => {
       this.dataSource.paginator = this.paginator();
       this.dataSource.sort = this.sort();
     });
   }
+
   onApprove(id: string) {
     console.log(id);
   }
