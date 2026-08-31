@@ -20,6 +20,10 @@ export class EnrollmentService {
     });
   }
 
+  getSchedules(studentId: number): Observable<Enrollment> {
+    return this.http.get<Enrollment>(url + studentId + '/schedule');
+  }
+  
   approve(id: string): Observable<void> {
     return this.http.put<void>(`${url}s/${id}/approve`, {});
   }
