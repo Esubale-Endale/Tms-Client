@@ -15,15 +15,14 @@ import { EnrollmentService } from '../../../services/enrollment';
 export class CourseList {
   private courseService = inject(CourseService);
   private enrollmentService = inject(EnrollmentService);
+
+
   selectedCourse = signal<Course | null>(null);
 
-  courses = rxResource({ stream: () => this.courseService.getAll() });
+  courses = rxResource({ stream: () => this.courseService.getAll(1, 12) });
 
   handleEnroll(course: Course) {
     this.selectedCourse.set(course);
-    this.enrollmentService.enroll(course.code).subscribe(() => {
-      console.log('Enrollment requested for:', course.title);
-      console.log(course);
-    });
+    this.enrollmentService.enroll(course.code,3 ).subscribe(() => {});
   }
 }

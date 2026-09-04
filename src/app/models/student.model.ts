@@ -6,3 +6,10 @@ export interface Student {
   isActive: boolean;
   enrollmentCount: number;
 }
+
+export interface CreateStudentRequest {
+  registrationNumber: string;
+  name: string;
+  gpa: number;
+  isActived: boolean;
+}

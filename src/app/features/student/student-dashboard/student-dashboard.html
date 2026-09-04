@@ -1,59 +1,164 @@
-<div
-  class="min-h-screen bg-gradient-to-b from-indigo-50 via-slate-50 to-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8"
->
-  <section
-    class="rounded-3xl border border-indigo-100 bg-white/80 backdrop-blur-sm p-5 shadow-lg shadow-indigo-100/50 sm:p-6"
-  >
+<div class="min-h-screen bg-gradient-to-b from-indigo-50 via-slate-50 to-slate-50 px-4 py-6 text-slate-900 sm:px-6 lg:px-8">
+  <!-- Header Overview -->
+  <section class="rounded-3xl border border-indigo-100 bg-white/80 backdrop-blur-sm p-5 shadow-lg shadow-indigo-100/50 sm:p-6">
     <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
       <div>
-        <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-500">
-          Student progress overview
-        </p>
+        <p class="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-500">Student Portal</p>
         <h1 class="text-2xl font-bold text-slate-900">Welcome back, {{ studentName() }}</h1>
-        <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-          Stay on top of your academic progress and discover new classes that fit your goals.
+        <p class="mt-1 text-sm text-slate-500">
+          Student ID: <span class="font-semibold text-slate-700">{{ registrationNumber() }}</span>
         </p>
       </div>
-      <button
-        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-medium text-white shadow-md shadow-indigo-300/50 transition hover:from-indigo-500 hover:to-violet-500 hover:shadow-lg hover:shadow-indigo-300/60"
-        (click)="registerForClass()"
+
+      <!-- Link to Catalog Page -->
+      <a
+        routerLink="/student/courses"
+        class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-medium text-white shadow-md shadow-indigo-300/50 transition hover:from-indigo-500 hover:to-violet-500 hover:shadow-lg"
       >
-        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-base"
-          >+</span
-        >
-        Register for a class
-      </button>
+        <span class="text-base font-bold">+</span> Register for New Courses
+      </a>
     </div>
 
-    <div class="grid gap-3 md:grid-cols-2">
-      <article
-        class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4"
-      >
-        <span class="mb-1 block text-sm text-slate-500">Credits earned</span>
-        <strong class="text-xl font-bold text-slate-900">{{ earnedCredits() }}</strong>
+    <!-- Academic Progress Cards -->
+    <div class="grid gap-4 sm:grid-cols-3">
+      <!-- Cumulative GPA -->
+      <article class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 shadow-xs">
+        <span class="mb-1 block text-sm font-medium text-slate-500">Cumulative GPA</span>
+        <strong class="text-2xl font-bold text-slate-900">{{ gpa() | number: '1.2-2' }}</strong>
+        <p class="text-xs text-slate-400 mt-1">Scale 4.0</p>
       </article>
-      <article
-        class="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-violet-50 p-4"
-      >
-        <span class="mb-1 block text-sm text-slate-500">Graduation status</span>
-        <strong class="text-xl font-bold text-slate-900">{{ graduationStatus() }}</strong>
+
+      <!-- Credits with Visual Progress Bar -->
+      <article class="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-4 shadow-xs">
+        <div class="flex justify-between items-baseline mb-1">
+          <span class="text-sm font-medium text-slate-500">Credits Earned</span>
+          <span class="text-xs font-semibold text-indigo-600">{{ creditProgress() }}% of 120</span>
+        </div>
+        <strong class="text-2xl font-bold text-slate-900">{{ earnedCredits() }} / 120</strong>
+        <div class="w-full bg-slate-200 rounded-full h-2 mt-2 overflow-hidden">
+          <div class="bg-indigo-600 h-2 rounded-full transition-all duration-500" [style.width.%]="creditProgress()"></div>
+        </div>
+      </article>
+
+      <!-- Graduation Status -->
+      <article class="rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-violet-50 p-4 shadow-xs">
+        <span class="mb-1 block text-sm font-medium text-slate-500">Graduation Status</span>
+        <strong
+          class="text-xl font-bold"
+          [class.text-emerald-600]="earnedCredits() >= 120"
+          [class.text-indigo-900]="earnedCredits() < 120"
+        >
+          {{ graduationStatus() }}
+        </strong>
+        <p class="text-xs text-slate-500 mt-1">
+          {{ approvedEnrollments().length }} approved &bull; {{ pendingEnrollments().length }} pending
+        </p>
       </article>
     </div>
   </section>
 
-  <section class="mt-6">
-    <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+  <!-- Class Schedule Section (Main Focus) -->
+  <section class="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="mb-5 flex flex-wrap items-center justify-between gap-4">
       <div>
-        <h2 class="text-lg font-bold text-slate-900">Course Catalog</h2>
-        <p class="text-sm text-slate-600">
-          Browse available offerings and enroll in the classes you want.
-        </p>
+        <h2 class="text-xl font-bold text-slate-900">Current Academic Schedule</h2>
+        <p class="text-sm text-slate-500">View enrolled classes, meeting schedules, and enrollment approval statuses.</p>
       </div>
-      <span
-        class="rounded-full bg-gradient-to-r from-indigo-100 to-violet-100 px-3 py-1 text-sm font-semibold text-indigo-700"
-      >
-        +3 credits per registration
-      </span>
+
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          (click)="refreshSchedule()"
+          class="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition"
+        >
+          ↻ Refresh Schedule
+        </button>
+      </div>
     </div>
+
+    <!-- Loading State -->
+    @if (scheduleResource.isLoading()) {
+      <div class="rounded-2xl border border-indigo-100 bg-slate-50 p-8 text-center text-sm text-slate-500">
+        Loading your academic schedule...
+      </div>
+    } @else if (scheduleResource.error()) {
+      <div class="rounded-2xl border border-red-200 bg-red-50 p-6 text-center text-sm text-red-700">
+        Could not load schedule from the server. Make sure the TMS API is running.
+      </div>
+    } @else {
+      <!-- Schedule Grid / Cards -->
+      @if (courses().length > 0) {
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          @for (item of courses(); track item.courseCode) {
+            <article class="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50/50 p-5 hover:border-indigo-300 hover:shadow-md transition">
+              <div>
+                <div class="flex items-start justify-between gap-2 mb-3">
+                  <span class="rounded-md bg-indigo-100 px-2.5 py-1 text-xs font-bold text-indigo-700">
+                    {{ item.courseCode }}
+                  </span>
+
+                  <!-- Status Badge -->
+                  <span
+                    class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                    [class.bg-emerald-100]="item.status === 1"
+                    [class.text-emerald-700]="item.status === 1"
+                    [class.bg-amber-100]="item.status === 0"
+                    [class.text-amber-700]="item.status === 0"
+                    [class.bg-rose-100]="item.status === 2"
+                    [class.text-rose-700]="item.status === 2"
+                  >
+                    {{ item.status === 1 ? 'Approved' : item.status === 0 ? 'Pending Approval' : 'Rejected' }}
+                  </span>
+                </div>
+
+                <h3 class="text-base font-semibold text-slate-900 leading-snug">
+                  {{ item.title }}
+                </h3>
+
+                <div class="mt-4 space-y-1.5 text-xs text-slate-500">
+                  <div class="flex items-center gap-2">
+                    <span class="font-medium text-slate-700">Schedule:</span>
+                    <span>{{ item.schedule || 'TBD' }}</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-medium text-slate-700">Credits:</span>
+                    <span>3 Credits</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5 border-t border-slate-200/80 pt-3 flex justify-between items-center text-xs">
+                <span class="text-slate-400">Term 2026</span>
+                <a
+                  routerLink="/student/courses"
+                  class="font-medium text-indigo-600 hover:text-indigo-800 transition"
+                >
+                  View Details →
+                </a>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <!-- Empty Schedule State with CTA -->
+        <div class="rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 mb-3 text-xl">
+            📅
+          </div>
+          <h3 class="text-base font-semibold text-slate-900">No scheduled classes</h3>
+          <p class="mt-1 text-sm text-slate-500 max-w-sm mx-auto">
+            You haven't enrolled in any courses for this term yet.
+          </p>
+          <div class="mt-5">
+            <a
+              routerLink="/student/courses"
+              class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 shadow-sm"
+            >
+              Browse Course Catalog
+            </a>
+          </div>
+        </div>
+      }
+    }
   </section>
 </div>

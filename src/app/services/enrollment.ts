@@ -4,7 +4,19 @@ import { Observable } from 'rxjs';
 import { Enrollment } from '../models/enrollment.model';
 import { environment } from '../../environments/environment.development';
 
-const url = `${environment.baseUrl}${environment.apiUrlv2}/enrollments`;
+export interface ScheduleItem {
+  courseCode: string;
+  title: string;
+  schedule: string;
+  status: number; // 0 = Pending, 1 = Approved, 2 = Rejected
+}
+export interface StudentSchedule {
+  studentId: number;
+  courses: ScheduleItem[];
+}
+
+const url = `${environment.apiUrl}/enrollments`;
+
 @Service()
 export class EnrollmentService {
   private http = inject(HttpClient);
@@ -13,18 +25,15 @@ export class EnrollmentService {
     return this.http.get<Enrollment[]>(url);
   }
 
-  enroll(courseId: string): Observable<void> {
-    return this.http.post<void>(url, {
-      courseCode: courseId,
-      studentId: 3,
-    });
+  enroll(courseCode: string, studentId: number): Observable<{ enrollmentId: number; studentId: number; courseCode: string }> {
+    return this.http.post<any>(url, { courseCode, studentId });
   }
 
-  getSchedules(studentId: number): Observable<Enrollment> {
-    return this.http.get<Enrollment>(url + studentId + '/schedule');
+  getSchedule(studentId: number): Observable<StudentSchedule> {
+    return this.http.get<StudentSchedule>(`${url}/${studentId}/schedule`);
   }
-  
+
   approve(id: string): Observable<void> {
-    return this.http.put<void>(`${url}s/${id}/approve`, {});
+    return this.http.put<void>(`${url}/${id}/approve`, {});
   }
 }

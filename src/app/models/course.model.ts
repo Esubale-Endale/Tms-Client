@@ -12,7 +12,8 @@ export interface Course {
 }
 /** Envelope for `GET /api/courses` — TMS API contract list shape (`PagedResponse<T>`). */
 export interface PagedResponse<T> {
-  items: T[];
+  data: T[];
+  items?: T[];
   totalCount: number;
   page: number;
   pageSize: number;

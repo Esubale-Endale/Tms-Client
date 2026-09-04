@@ -29,7 +29,7 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-const apiUrl = environment.baseUrl + environment.apiUrlv2 + '/auth';
+const apiUrl : string = environment.apiUrl + '/auth';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

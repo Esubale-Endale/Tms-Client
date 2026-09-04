@@ -12,11 +12,10 @@ export class Schedule {
   private enlollmentService = inject(EnrollmentService);
   private authService = inject(AuthService);
 
-
   schedules = () => {
-    const Myschedules = this.enlollmentService.getSchedules(3);
+    const Myschedules = this.enlollmentService.getSchedule(3);
 
-    console.log("schedules", Myschedules)
+    console.log('schedules', Myschedules);
     return Myschedules;
   };
 }

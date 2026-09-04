@@ -1,6 +1,8 @@
 <div class="flex items-center justify-between py-3 px-5">
   <h1 class="text-xl font-bold">Student</h1>
-  <button mat-raised-button (click)="openRegisterDialog()">Register Student</button>
+  @if (authService.isAdmin()) {
+    <button mat-raised-button (click)="openRegisterDialog()">Register Student</button>
+  }
 </div>
 <table mat-table [dataSource]="dataSource" class="mat-shadow-2">
   <ng-container matColumnDef="registrationNumber">

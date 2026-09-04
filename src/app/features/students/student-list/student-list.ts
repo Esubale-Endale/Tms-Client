@@ -5,6 +5,7 @@ import { Student } from '../../../models/student.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentForm } from '../student-form/student-form';
+import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-student-list',
@@ -15,6 +16,7 @@ import { StudentForm } from '../student-form/student-form';
 export class StudentList {
   private dialog = inject(MatDialog);
   studentService = inject(StudentService);
+  authService = inject(AuthService);
   displayedColumns: string[] = ['registrationNumber', 'name', 'gpa', 'isActive', 'enrollmentCount'];
 
   dataSource = new MatTableDataSource<Student>();
@@ -25,26 +27,25 @@ export class StudentList {
     });
 
     effect(() => {
-      console.log('Students at student-list:', this.dataSource.data);
+      console.log('Students at student-list:', this.dataSource.data.values());
     });
   }
 
-  onRegisterStudent() {
-    console.log('Register Student button clicked');
+  loadStudents() {
+    this.studentService.getAll().subscribe((students: Student[]) => {
+      this.dataSource.data = students;
+    });
   }
 
   openRegisterDialog() {
     const dialogRef = this.dialog.open(StudentForm, {
-      width: '500px',
-      height: '400px',
+      width: '480px',
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('New student registered:', result);
-        // this.studentService.create(result).subscribe((student: Student) => {
-        //   this.dataSource.data = [...this.dataSource.data, student];
-        // });
+    dialogRef.afterClosed().subscribe((saved: boolean) => {
+      if (saved) {
+        this.loadStudents();
       }
     });
   }
